@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {AppRegistry,Text,View,StyleSheet} from 'react-native';
-import { Root } from '../config/router';
+import { List, ListItem } from 'react-native-elements';
 
-export default class Main extends Component {
+export default class Login extends Component {
   render (){
     return (
-      <Root> </Root>
+      <Text> Landing Page </Text>
     );
   }
 }
@@ -17,4 +17,4 @@ var style = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('Main', () => Main);
+AppRegistry.registerComponent('Landing', () => Landing);
