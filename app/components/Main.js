@@ -5,7 +5,7 @@ import { Root } from '../config/router';
 export default class Main extends Component {
   render (){
     return (
-      <Root> </Root>
+      <Text> Tsst </Text>
     );
   }
 }

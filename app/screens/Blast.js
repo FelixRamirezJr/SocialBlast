@@ -5,23 +5,28 @@ import {
   ScrollView,
   AsyncStorage
 } from 'react-native';
+
 import { List, ListItem } from 'react-native-elements';
 import { users } from '../config/data';
 import { simple,userKey, loadKey } from '../Utility/Helper';
+import NewUser from '../components/NewUser';
+
 
 var STORAGE_KEY = userKey();
 
 class Blast extends Component {
   constructor(props){
     super(props);
-    this.state = {test: "", messages: ""};
-    this.getTest = this.getTest.bind(this);
+    this.state = {test: "",
+                  messages: "",
+                  user_id: "",
+                  user_set: false};
+    this.loadUserData = this.loadUserData.bind(this);
   }
 
   componentDidMount(){
     this.setState({ messages: "Component did mount" });
     console.log("Test");
-    this.getTest();
     this.setState({ messages: simple });
     this.getUser();
   }
@@ -30,6 +35,9 @@ class Blast extends Component {
     try {
       var value = await AsyncStorage.getItem(STORAGE_KEY);
       if (value !== null){
+
+        this.setState({user_id: value});
+        this.loadUserData();
         this.setState({ messages: value });
       } else {
         this.setState({ messages: "Empty" });
@@ -48,8 +56,8 @@ class Blast extends Component {
     }
   };
 
-  getTest() {
-   return fetch('https://social-blast-api.herokuapp.com/test')
+  loadUserData() {
+   return fetch('https://social-blast-api.herokuapp.com/users/' + this.state.user_id)
      .then((response) => response.json())
      .then((responseJson) => {
        this.setState({ messages: "YAY" });
@@ -68,7 +76,9 @@ class Blast extends Component {
 
   render() {
     return (
-      <Text> Blast {this.state.test} |  {this.state.messages}  </Text>
+      <View>
+        <NewUser />
+      </View>
     );
   }
 }
