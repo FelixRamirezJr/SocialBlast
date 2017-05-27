@@ -4,6 +4,7 @@ import { Icon } from 'react-native-elements';
 
 import Blast from '../screens/Blast';
 import Networks from '../screens/Networks';
+import Settings from '../screens/Settings';
 
 export const BlastStack = StackNavigator({
   Blast: {
@@ -11,12 +12,6 @@ export const BlastStack = StackNavigator({
     navigationOptions: {
       title: 'Blast',
     },
-  },
-  Details: {
-    screen: UserDetail,
-    navigationOptions: ({ navigation }) => ({
-      title: `${navigation.state.params.name.first.toUpperCase()} ${navigation.state.params.name.last.toUpperCase()}`,
-    }),
   },
 });
 
