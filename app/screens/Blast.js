@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 
 import { List, ListItem } from 'react-native-elements';
-import { users } from '../config/data';
 import { simple,userKey, loadKey } from '../Utility/Helper';
 import NewUser from '../components/NewUser';
 import Home from '../components/Home';

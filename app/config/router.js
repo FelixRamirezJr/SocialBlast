@@ -25,15 +25,15 @@ export const NetworkStack = StackNavigator({
 });
 
 export const Tabs = TabNavigator({
-  Feed: {
-    screen: BlastStack,
+  Blast: {
+    screen: Blast,
     navigationOptions: {
       tabBarLabel: 'Blast',
       tabBarIcon: ({ tintColor }) => <Icon name="list" size={35} color={tintColor} />,
     },
   },
   Networks: {
-    screen: NetworkStack,
+    screen: Networks,
     navigationOptions: {
       tabBarLabel: 'Networks',
       tabBarIcon: ({ tintColor }) => <Icon name="account-circle" size={35} color={tintColor} />
