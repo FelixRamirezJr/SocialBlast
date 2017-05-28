@@ -7,9 +7,8 @@ var {
 } = React;
 
 module.exports = StyleSheet.create({
-
-  product_color: {
-    color: 'red'
+  container: {
+    padding: 10,
+    marginTop: 20
   }
-
 });

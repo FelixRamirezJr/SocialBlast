@@ -6,6 +6,7 @@ import TextField from 'react-native-md-textinput';
 
 var formsStyles = require('../stylesheets/forms');
 var app_css = require('../stylesheets/global_css');
+var globals = require('../Utility/Global');
 
 
 class NewUser extends Component {
@@ -57,13 +58,14 @@ class NewUser extends Component {
   }
 
   render (){
-
     return (
-      <View style={formsStyles.container} >
-        <Text> Hello! Please provide an email and password to use Social Blast </Text>
+      <View style={app_css.container} >
+        <Text style={ style.welcome }> Welcome to Network Blast </Text>
+        <Text style={ style.details }> Thanks for downloading the Network Blast app! Before we continue, please provide an Email and Password for your account. </Text>
         <TextField label={'Email'}
                    onChangeText={(email) => this.setState({email})}
-                   value={this.state.email} />
+                   value={this.state.email}
+                  highlightColor={globals.COLOR.PRIMARY_ACCENT} />
        <TextField label={'Password'}
                   onChangeText={(password) => this.setState({password})}
                   value={this.state.password}
@@ -71,8 +73,7 @@ class NewUser extends Component {
       <Button
         onPress={this.submit}
         title="Create Account"
-        color="#841584"
-        accessibilityLabel="Learn more about this purple button"
+        color={globals.COLOR.BRAND_COLOR_DARKEN}
       />
       </View>
     );
@@ -80,11 +81,14 @@ class NewUser extends Component {
 }
 
 var style = StyleSheet.create({
-
-  inputBoxes: {
-    height: 20,
-    borderBottomColor: 'black',
-    borderBottomWidth: StyleSheet.hairlineWidth
+  welcome: {
+    textAlign: 'center',
+    color: globals.COLOR.PRIMARY,
+    fontSize: 25,
+    marginBottom: 5
+  },
+  details: {
+    color: globals.COLOR.SECONDARY_TEXT
   }
 });
 

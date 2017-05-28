@@ -8,11 +8,6 @@ var {
 
 module.exports = StyleSheet.create({
 
-  container: {
-    padding: 5,
-    marginTop: 20
-  },
-
   body: {
 
   },
