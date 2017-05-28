@@ -67,7 +67,7 @@ class Blast extends Component {
     return (
       <View>
         {this.state.loaded ? (
-          <Home email={this.state.current_user.email}/>
+          <Home email={this.state.current_user.email} current_user={this.state.current_user} />
         ) : (
           <Loading />
         )}
