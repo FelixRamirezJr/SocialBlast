@@ -15,7 +15,8 @@ class NewUser extends Component {
       email: "",
       password: "",
       emailTemp: "",
-      passwordTemp: ""
+      passwordTemp: "",
+      user_set: this.props.user_set
     };
     this.emailUpdate = this.emailUpdate.bind(this);
     this.passwordUpdate = this.passwordUpdate.bind(this);
@@ -35,6 +36,7 @@ class NewUser extends Component {
   }
 
   submit(){
+    //this.setState({ user_set: true });
     fetch('https://social-blast-api.herokuapp.com/users/new', {
       method: 'POST',
       headers: {
@@ -45,11 +47,17 @@ class NewUser extends Component {
         email: this.state.email,
         password: this.state.password,
       })
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        this.props.set_user( String(responseJson.id) );
+         //this.setUser( String(responseJson.id) );
+         return responseJson.email;
     });
 
   }
 
   render (){
+
     return (
       <View style={formsStyles.container} >
         <Text> Hello! Please provide an email and password to use Social Blast </Text>

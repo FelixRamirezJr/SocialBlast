@@ -10,6 +10,8 @@ import { List, ListItem } from 'react-native-elements';
 import { users } from '../config/data';
 import { simple,userKey, loadKey } from '../Utility/Helper';
 import NewUser from '../components/NewUser';
+import Home from '../components/Home';
+import Loading from '../components/Loading';
 
 
 var STORAGE_KEY = userKey();
@@ -18,16 +20,14 @@ class Blast extends Component {
   constructor(props){
     super(props);
     this.state = {test: "",
-                  messages: "",
+                  debuggerMessages: "",
                   user_id: "",
-                  user_set: false};
+                  user_set: null,
+                  email: "",
+                  loaded: false,
+                  current_user: null};
     this.loadUserData = this.loadUserData.bind(this);
-  }
-
-  componentDidMount(){
-    this.setState({ messages: "Component did mount" });
-    console.log("Test");
-    this.setState({ messages: simple });
+    // Get logged in user
     this.getUser();
   }
 
@@ -35,24 +35,17 @@ class Blast extends Component {
     try {
       var value = await AsyncStorage.getItem(STORAGE_KEY);
       if (value !== null){
-
         this.setState({user_id: value});
+        // Load user data via GET API Request
         this.loadUserData();
-        this.setState({ messages: value });
+        this.setState({ debuggerMessages: value });
       } else {
-        this.setState({ messages: "Empty" });
+        this.setState({ debuggerMessages: "Empty" });
+        this.setState({ user_set: false });
+        this.setState({ loaded: true });
       }
     } catch (error) {
-      this.setState({ messages: "Empty" });
-    }
-  };
-
-  setUser = async (value) => {
-    try {
-      await AsyncStorage.setItem(STORAGE_KEY, value);
-      this.setState({ messages: "saved: " + value });
-    } catch (error) {
-      this.setState({ messages: "Error" });
+      this.setState({ debuggerMessages: "Empty" });
     }
   };
 
@@ -60,9 +53,10 @@ class Blast extends Component {
    return fetch('https://social-blast-api.herokuapp.com/users/' + this.state.user_id)
      .then((response) => response.json())
      .then((responseJson) => {
-       this.setState({ messages: "YAY" });
-       this.setState({ test: responseJson.email });
-       //this.setUser( String(responseJson.id) );
+       this.setState({ current_user: responseJson,
+                       loaded: true,
+                       user_set: true,
+                       debuggerMessages: "Complete"});
        return responseJson.email;
      })
      .catch((error) => {
@@ -70,14 +64,15 @@ class Blast extends Component {
      });
    }
 
-   isLoggedIn() {
-
-   }
-
   render() {
     return (
       <View>
-        <NewUser />
+        {this.state.loaded ? (
+          <Home email={this.state.current_user.email}/>
+        ) : (
+          <Loading />
+        )}
+
       </View>
     );
   }
