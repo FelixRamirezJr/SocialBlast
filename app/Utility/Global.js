@@ -9,4 +9,7 @@ module.exports = {
     SECONDARY_TEXT: '#757575',
     DIVIDER: '#BDBDBD'
   },
+  FORMS: {
+    INPUT_HEIGHT: 40
+  }
 };

@@ -7,6 +7,7 @@ import TextField from 'react-native-md-textinput';
 var formsStyles = require('../stylesheets/forms');
 var app_css = require('../stylesheets/global_css');
 var globals = require('../Utility/Global');
+var helper = require('../Utility/Helper');
 
 
 class NewUser extends Component {
@@ -17,60 +18,71 @@ class NewUser extends Component {
       password: "",
       emailTemp: "",
       passwordTemp: "",
-      user_set: this.props.user_set
+      user_set: this.props.user_set,
+      invalidEmail: true,
+      invalidPassword: true
     };
-    this.emailUpdate = this.emailUpdate.bind(this);
-    this.passwordUpdate = this.passwordUpdate.bind(this);
     this.submit = this.submit.bind(this);
   }
 
-  emailUpdate(e){
-    this.setState({
-      emailTemp: e.target.value
-    });
-  }
-
-  passwordUpdate(e){
-    this.setState({
-      passwordTemp: e.target.value
-    });
-  }
 
   submit(){
-    //this.setState({ user_set: true });
-    fetch('https://social-blast-api.herokuapp.com/users/new', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: this.state.email,
-        password: this.state.password,
-      })
-    }).then((response) => response.json())
-      .then((responseJson) => {
-        this.props.set_user( String(responseJson.id) );
-         //this.setUser( String(responseJson.id) );
-         return responseJson.email;
-    });
-
+    if( helper.validateEmail(this.state.email) && this.state.password.length >= 5 )
+    {
+      fetch('https://social-blast-api.herokuapp.com/users/new', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: this.state.email,
+          password: this.state.password,
+        })
+      }).then((response) => response.json())
+        .then((responseJson) => {
+          this.props.set_user( String(responseJson.id) );
+           //this.setUser( String(responseJson.id) );
+           return responseJson.email;
+      });
+    }
   }
 
   render (){
+    let invalidEmail,invalidPassword = null;
+    if(  !helper.validateEmail(this.state.email)  ){
+      invalidEmail = <Text> Please enter a valid email address </Text>;
+    } else {
+      invalidEmail = <Text> </Text>;
+    }
+    if (this.state.password.length <= 5) {
+      invalidPassword = <Text> Please enter at least 5 characters </Text>;
+    } else {
+      invalidPassword = <Text> </Text>;
+    }
+
     return (
       <View style={app_css.container} >
         <Text style={ style.welcome }> Welcome to Network Blast </Text>
         <Text style={ style.details }> Thanks for downloading the Network Blast app! Before we continue, please provide an Email and Password for your account. </Text>
         <TextField label={'Email'}
-                   onChangeText={(email) => this.setState({email})}
+                  onChangeText={(email) => this.setState({email})}
                    value={this.state.email}
-                  highlightColor={globals.COLOR.PRIMARY_ACCENT} />
+                  highlightColor={globals.COLOR.PRIMARY_ACCENT}
+                  inputStyle={{ height: globals.FORMS.INPUT_HEIGHT, lineHeight: globals.FORMS.INPUT_HEIGHT }}  />
+        { this.state.invalidEmail ? invalidEmail : null }
        <TextField label={'Password'}
                   onChangeText={(password) => this.setState({password})}
                   value={this.state.password}
-                  secureTextEntry={true} />
+                  secureTextEntry={true}
+                  style={style.last_input}
+                  highlightColor={globals.COLOR.PRIMARY_ACCENT}
+                  inputStyle={{ height: globals.FORMS.INPUT_HEIGHT, lineHeight: globals.FORMS.INPUT_HEIGHT }} />
+
+      { this.state.invalidPassword ? invalidPassword : null }
+      <Text> {"\n"} </Text>
       <Button
+        style={style.button}
         onPress={this.submit}
         title="Create Account"
         color={globals.COLOR.BRAND_COLOR_DARKEN}
@@ -89,6 +101,9 @@ var style = StyleSheet.create({
   },
   details: {
     color: globals.COLOR.SECONDARY_TEXT
+  },
+  button: {
+    marginTop: 30
   }
 });
 

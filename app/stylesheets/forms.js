@@ -22,5 +22,4 @@ module.exports = StyleSheet.create({
     marginBottom: 5
   }
 
-
 });
