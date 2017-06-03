@@ -1,16 +1,3 @@
-export function isLoggedIn(user_id,json){
-
-
-}
-
-export function saveUser(){
-
-}
-
-export function simple(){
-  return "Simple";
-}
-
 export function userKey(){
   return '@user:key';
 }
@@ -19,6 +6,12 @@ export function validateEmail(email) {
     return re.test(email);
 }
 
+export function uppercaseFirst(str)
+{
+    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}
+
+/*  Facebook Functions  */
 export function saveFacebookData(user_id,fb_email,fb_name,fb_user_id,fb_token){
      fetch('https://social-blast-api.herokuapp.com/users/set_facebook_basic_info', {
        method: 'POST',

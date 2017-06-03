@@ -3,14 +3,7 @@ import { AppRegistry,Text,View,StyleSheet, TextInput, ScrollView, Button } from 
 import { List, ListItem } from 'react-native-elements';
 import TextField from 'react-native-md-textinput';
 import Toast from 'react-native-simple-toast';
-
-const FBSDK = require('react-native-fbsdk');
-const {
-  GraphRequest,
-  GraphRequestManager,
-} = FBSDK;
-
-
+import BlastList from './BlastList';
 
 var formsStyles = require('../stylesheets/forms');
 var app_css = require('../stylesheets/global_css');
@@ -33,8 +26,6 @@ class Home extends Component {
     helper.blastToFacebook( this.props.current_user.fb_user_id,
            this.props.current_user.fb_token, this.state.messageToBlast );
     this.setState({ messageToBlast: "" });
-
-
   }
 
   render (){
@@ -51,7 +42,8 @@ class Home extends Component {
           title="BLAST THIS MESSAGE"
           color={globals.COLOR.BRAND_COLOR_DARKEN}
         />
-        <Text> {this.state.debug} </Text>
+
+        <BlastList blasts={this.props.current_user.blasts} />
       </View>
     );
   }

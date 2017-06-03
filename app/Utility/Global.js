@@ -11,5 +11,8 @@ module.exports = {
   },
   FORMS: {
     INPUT_HEIGHT: 40
-  }
+  },
+  BORDER: {
+    RADIUS: 8
+  },
 };
