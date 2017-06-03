@@ -4,25 +4,37 @@ import { List, ListItem } from 'react-native-elements';
 import TextField from 'react-native-md-textinput';
 import Toast from 'react-native-simple-toast';
 
+const FBSDK = require('react-native-fbsdk');
+const {
+  GraphRequest,
+  GraphRequestManager,
+} = FBSDK;
+
 
 
 var formsStyles = require('../stylesheets/forms');
 var app_css = require('../stylesheets/global_css');
 var globals = require('../Utility/Global');
+var helper = require('../Utility/Helper');
 
 
 class Home extends Component {
   constructor(props){
     super(props);
     this.state = {
-      messageToBlast: ""
+      messageToBlast: "",
+      debug: ""
     };
     this.submit = this.submit.bind(this);
   }
 
   submit(){
     Toast.show('Your message has been blasted!',Toast.LONG);
+    helper.blastToFacebook( this.props.current_user.fb_user_id,
+           this.props.current_user.fb_token, this.state.messageToBlast );
     this.setState({ messageToBlast: "" });
+
+
   }
 
   render (){
@@ -39,6 +51,7 @@ class Home extends Component {
           title="BLAST THIS MESSAGE"
           color={globals.COLOR.BRAND_COLOR_DARKEN}
         />
+        <Text> {this.state.debug} </Text>
       </View>
     );
   }

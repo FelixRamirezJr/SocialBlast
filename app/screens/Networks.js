@@ -30,7 +30,8 @@ class Networks extends Component {
                   loaded: false,
                   current_user: null,
                   fb_token: "",
-                  fb_email: ""};
+                  fb_email: "",
+                  fb_user_id: ""};
     this.loadUserData = this.loadUserData.bind(this);
     this.setFacebook = this.setFacebook.bind(this);
     // Get logged in user
@@ -65,7 +66,8 @@ class Networks extends Component {
                        debuggerMessages: "Complete",
                        fb_token: responseJson.fb_token,
                        fb_email: responseJson.fb_email,
-                       fb_name: responseJson.fb_name});
+                       fb_name: responseJson.fb_name,
+                       fb_user_id: responseJson.fb_user_id});
        return responseJson.email;
      })
      .catch((error) => {
@@ -79,8 +81,8 @@ class Networks extends Component {
      .then((response) => response.json())
      .then((json) => {
        // Some user object has been set up somewhere, build that user here
-       this.setState({ fb_name: json.name, fb_email: json.email, fb_token: token, debuggerMessages: "Aboiut to save new data"});
-       helper.saveFacebookData( this.state.user_id, json.email, json.name, token );
+       this.setState({ fb_name: json.name, fb_email: json.email, fb_token: token, fb_user_id: json.id});
+       helper.saveFacebookData( this.state.user_id, json.email, json.name, json.id ,token );
        return "Okay";
      })
      .catch(() => {
