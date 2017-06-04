@@ -21,11 +21,34 @@ class Home extends Component {
     this.submit = this.submit.bind(this);
   }
 
-  submit(){
-    Toast.show('Your message has been blasted!',Toast.LONG);
-    helper.blastToFacebook( this.props.current_user.fb_user_id,
-           this.props.current_user.fb_token, this.state.messageToBlast );
-    this.setState( { messageToBlast: "" } );
+  submit()
+  {
+    if( this.state.messageToBlast.length == 0 ){
+      Toast.show("Blast can't be blank",Toast.LONG);
+      return false;
+    }
+    var blasted = 0;
+    var temp = null;
+    for(var i = 0; i < this.props.current_user.blasts.length; i++)
+    {
+      temp = this.props.current_user.blasts[i];
+      if( temp.active  )
+      {
+        helper.blast(this.props.current_user,temp.name,this.state.messageToBlast);
+        blasted++;
+      }
+    }
+
+    if(blasted > 0)
+    {
+      Toast.show('Your message has been blasted!',Toast.LONG);
+      this.setState( { messageToBlast: "" } );
+    }
+    else
+    {
+      Toast.show('You have no Networks to blast!',Toast.LONG);
+    }
+
   }
 
   render (){

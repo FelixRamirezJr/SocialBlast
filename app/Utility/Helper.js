@@ -70,3 +70,19 @@ export function saveFacebookData(user_id,fb_email,fb_name,fb_user_id,fb_token){
          return "Success";
     });
   }
+
+  export function blast(current_user,name,message)
+  {
+    switch( name )
+    {
+      case "facebook":
+      blastToFacebook( current_user.fb_user_id,
+             current_user.fb_token, message );
+        break;
+      case "twitter":
+        break;
+      default:
+        console.log("Blast can not be found...");
+        break;
+    }
+  }
