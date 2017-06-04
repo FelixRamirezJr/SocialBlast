@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import { AppRegistry,Text,View,StyleSheet, TextInput, ScrollView, Button } from 'react-native';
+import { AppRegistry,Text,View,StyleSheet, TextInput, ScrollView, TouchableHighlight } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import TextField from 'react-native-md-textinput';
 import Toast from 'react-native-simple-toast';
+import BlastModal from './BlastModal';
 
 var formsStyles = require('../stylesheets/forms');
 var app_css = require('../stylesheets/global_css');
@@ -14,8 +15,21 @@ class BlastList extends Component {
   constructor(props){
     super(props);
     this.state = {
-      blasts: this.props.blasts
+      blasts: this.props.blasts,
+      modal: false
     };
+    this.openEditBlast = this.openEditBlast.bind(this);
+    this.closeEditBlast = this.closeEditBlast.bind(this);
+  }
+
+  openEditBlast(){
+    console.log("Trying to open the modal");
+    this.setState({ modal: true });
+  }
+
+  closeEditBlast(){
+    console.log("Set modal blast from other component");
+    this.setState({ modal: false });
   }
 
   render (){
@@ -29,9 +43,15 @@ class BlastList extends Component {
     return (
       <View style={style.container}>
         <View style={style.add}>
-          <Text style={style.add_text}> Edit Blast List </Text>
+          <TouchableHighlight onPress={this.openEditBlast}>
+            <Text style={style.add_text}>  Edit Blast List </Text>
+          </TouchableHighlight>
         </View>
         {contents}
+        <BlastModal blasts={this.state.blasts}
+                    visible={this.state.modal}
+                    user_id={this.props.user_id}
+                    closeEditBlast={this.closeEditBlast} />
       </View>
     );
   }

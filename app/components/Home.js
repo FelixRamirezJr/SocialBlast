@@ -43,7 +43,7 @@ class Home extends Component {
           color={globals.COLOR.BRAND_COLOR_DARKEN}
         />
 
-        <BlastList blasts={this.props.current_user.blasts} />
+        <BlastList blasts={this.props.current_user.blasts} user_id={this.props.current_user.id} />
       </View>
     );
   }
