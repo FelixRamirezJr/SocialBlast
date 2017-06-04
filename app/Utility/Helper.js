@@ -53,3 +53,20 @@ export function saveFacebookData(user_id,fb_email,fb_name,fb_user_id,fb_token){
       console.log(error.message);
     });
   }
+
+  export function changeBlastActivity(id,value){
+    fetch('https://social-blast-api.herokuapp.com/blasts/toggle_active', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: id,
+        active: value
+      })
+    }).then((response) => response.json())
+      .then((responseJson) => {
+         return "Success";
+    });
+  }

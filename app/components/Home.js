@@ -25,7 +25,7 @@ class Home extends Component {
     Toast.show('Your message has been blasted!',Toast.LONG);
     helper.blastToFacebook( this.props.current_user.fb_user_id,
            this.props.current_user.fb_token, this.state.messageToBlast );
-    this.setState({ messageToBlast: "" });
+    this.setState( { messageToBlast: "" } );
   }
 
   render (){
@@ -43,7 +43,9 @@ class Home extends Component {
           color={globals.COLOR.BRAND_COLOR_DARKEN}
         />
 
-        <BlastList blasts={this.props.current_user.blasts} user_id={this.props.current_user.id} />
+        <BlastList blasts={this.props.current_user.blasts}
+                   user_id={this.props.current_user.id}
+                   loadUserData={this.props.loadUserData} />
       </View>
     );
   }

@@ -15,13 +15,22 @@ class NetworksToToggle extends Component {
     this.state = {
       selected: this.props.active
     };
+    this.valueChange = this.valueChange.bind(this);
   }
+
+  valueChange(value){
+    this.setState({selected: value});
+    // Will toggle a blast item or inactive in the database for storage
+    console.log("Trying to change to: " + value);
+    helper.changeBlastActivity( this.props.id , value );
+  }
+
 
   render (){
     return (
       <View style={[app_css.container,style.network]} >
         <Switch
-          onValueChange={(value) => this.setState({selected: value})}
+          onValueChange={this.valueChange}
           style={{marginBottom: 10}}
           value={this.state.selected}
           />

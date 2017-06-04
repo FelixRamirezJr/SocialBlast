@@ -63,7 +63,11 @@ class BlastModal extends Component {
     } else {
       inModal = this.props.blasts.map(function (item) {
          return (
-           <NetworksToToggle active={item.active} name={item.name} key={item.id} />
+           <NetworksToToggle
+           active={item.active}
+           name={item.name}
+           key={item.id}
+           id={item.id} />
          );
       });
     }

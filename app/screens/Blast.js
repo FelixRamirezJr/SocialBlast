@@ -49,6 +49,7 @@ class Blast extends Component {
   };
 
   loadUserData() {
+  console.log("Load user data has been called");
    return fetch('https://social-blast-api.herokuapp.com/users/' + this.state.user_id)
      .then((response) => response.json())
      .then((responseJson) => {
@@ -67,7 +68,10 @@ class Blast extends Component {
     return (
       <View>
         {this.state.loaded ? (
-          <Home email={this.state.current_user.email} current_user={this.state.current_user} />
+          <Home email={this.state.current_user.email}
+                current_user={this.state.current_user}
+                loadUserData={this.loadUserData}
+                 />
         ) : (
           <Loading />
         )}

@@ -28,17 +28,22 @@ class BlastList extends Component {
   }
 
   closeEditBlast(){
-    console.log("Set modal blast from other component");
+    console.log("Load user data should be called again...");
+    this.props.loadUserData();
     this.setState({ modal: false });
+
   }
 
   render (){
-    var contents = this.state.blasts.map(function (item) {
+    var contents = this.props.blasts.map(function (item) {
+      if( item.active )
+      {
        return (
          <View key={item.id} style={style.element}>
            <Text autoCapitalize={true} >{helper.uppercaseFirst(item.name)}</Text>
          </View>
        );
+      }
     });
     return (
       <View style={style.container}>
@@ -48,7 +53,7 @@ class BlastList extends Component {
           </TouchableHighlight>
         </View>
         {contents}
-        <BlastModal blasts={this.state.blasts}
+        <BlastModal blasts={this.props.blasts}
                     visible={this.state.modal}
                     user_id={this.props.user_id}
                     closeEditBlast={this.closeEditBlast} />
