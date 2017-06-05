@@ -12,13 +12,15 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import "OAuthManager.h"
+
 
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  
+
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
@@ -36,23 +38,38 @@
   [self.window makeKeyAndVisible];
   [[FBSDKApplicationDelegate sharedInstance] application:application
                            didFinishLaunchingWithOptions:launchOptions];
-  
+  [OAuthManager setupOAuthHandler:application];
+
   return YES;
 }
-  
+
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
             options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-  
+
   BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
                                                                 openURL:url
                                                       sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
                                                              annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
                   ];
+  
+  if ([url.absoluteString containsString:@"twitter"]){
+      return [OAuthManager handleOpenUrl:application
+                                 openURL:url
+                       sourceApplication:@"twitter"
+                              annotation:nil];
+  }
   // Add any custom logic here.
   return handled;
 }
-  
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+  return [OAuthManager handleOpenUrl:application
+                             openURL:url
+                   sourceApplication:sourceApplication
+                          annotation:annotation];
+}
+
 - (void)applicationDidBecomeActive:(UIApplication *)application {
   [FBSDKAppEvents activateApp];
 }

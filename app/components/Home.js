@@ -1,15 +1,26 @@
 import React, {Component} from 'react';
-import { AppRegistry,Text,View,StyleSheet, TextInput, ScrollView, Button } from 'react-native';
+import { AppRegistry,Text,View,StyleSheet, TextInput, ScrollView, Button,Platform, WebView } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import TextField from 'react-native-md-textinput';
 import Toast from 'react-native-simple-toast';
 import BlastList from './BlastList';
+import SafariView from 'react-native-safari-view';
+
+import OAuthManager from 'react-native-oauth';
+
+
+const manager = new OAuthManager('NetworkBlast');
+manager.configure({
+  twitter: {
+    consumer_key: 'hjiiNZpvH4lsQ7TZDrLB5KliB',
+    consumer_secret: '8uJYSCCGAc2rMsfSJHaBICve7SJfuru5SGeVtJmkffaI4vKOJA'
+  }
+});
 
 var formsStyles = require('../stylesheets/forms');
 var app_css = require('../stylesheets/global_css');
 var globals = require('../Utility/Global');
 var helper = require('../Utility/Helper');
-
 
 class Home extends Component {
   constructor(props){
@@ -19,6 +30,29 @@ class Home extends Component {
       debug: ""
     };
     this.submit = this.submit.bind(this);
+  }
+
+  componentDidMount()
+  {
+    if( Platform.OS == 'android' ){
+      manager.authorize('twitter')
+      .then(function(resp){
+        console.log("Okay I got something....");
+        Toast.show("Authorized YAY",Toast.LONG);
+        console.log();
+      })
+      .catch(err => console.log(err));
+    }
+    else
+    {
+      SafariView.isAvailable()
+        .then(SafariView.show({
+          url: "https://network-blast.herokuapp.com"
+        }))
+        .catch(error => {
+          Toast.show("Can not show in safari...",Toast.LONG);
+        });
+    }
   }
 
   submit()
