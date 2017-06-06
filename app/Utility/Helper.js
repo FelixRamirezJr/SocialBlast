@@ -88,6 +88,8 @@ export function saveFacebookData(user_id,fb_email,fb_name,fb_user_id,fb_token){
     }).then((response) => response.json())
       .then((responseJson) => {
          return "Success";
+    }).catch(function(error){
+      return "false";
     });
   }
 

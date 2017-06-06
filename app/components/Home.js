@@ -77,10 +77,9 @@ class Home extends Component {
           color={globals.COLOR.BRAND_COLOR_DARKEN}
         />
 
-        <BlastList blasts={this.props.current_user.blasts}
+        <BlastList blasts={this.props.blasts}
                    user_id={this.props.current_user.id}
                    loadUserData={this.props.loadUserData} />
-        <Text> {this.state.debug} </Text>
       </View>
     );
   }

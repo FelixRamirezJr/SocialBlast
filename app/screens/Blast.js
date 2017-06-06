@@ -24,11 +24,18 @@ class Blast extends Component {
                   user_set: null,
                   email: "",
                   loaded: false,
-                  current_user: null};
+                  current_user: null,
+                  blasts: [],
+                  count: 0};
     this.loadUserData = this.loadUserData.bind(this);
     // Get logged in user
     this.getUser();
   }
+
+    componentWillMount(){
+      var newc = this.state.count + 1;
+      this.setState({ count: newc });
+    }
 
     getUser = async () => {
     try {
@@ -56,7 +63,8 @@ class Blast extends Component {
        this.setState({ current_user: responseJson,
                        loaded: true,
                        user_set: true,
-                       debuggerMessages: "Complete"});
+                       debuggerMessages: "Complete",
+                       blasts: responseJson.blasts});
        return responseJson.email;
      })
      .catch((error) => {
@@ -71,11 +79,12 @@ class Blast extends Component {
           <Home email={this.state.current_user.email}
                 current_user={this.state.current_user}
                 loadUserData={this.loadUserData}
+                blasts={this.state.blasts}
                  />
         ) : (
           <Loading />
         )}
-
+        <Text> {this.state.count} </Text>
       </View>
     );
   }

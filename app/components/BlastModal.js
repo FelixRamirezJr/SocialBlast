@@ -19,32 +19,34 @@ class BlastModal extends Component {
       visible: false,
       blasts: [],
       loaded: false,
-      count: 0
+      count: 0,
+      debug: 0
     };
     this.close = this.close.bind(this);
+    this.generateBlasts = this.generateBlasts.bind(this);
   }
 
   componentWillMount(){
-    this.setState({ loaded: false });
   }
 
   componentWillReceiveProps(props){
-    // Grab the List
-    var nn = this.state.count + 100;
-    this.setState({count: nn});
-    if( props.visible )
-    {
-      return fetch('https://social-blast-api.herokuapp.com/get_blast_list?id=' + this.props.user_id)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        var newcount = this.state.count + 1;
-        this.setState({ loaded: true, count: newcount, blasts: responseJson });
-        return JSON.stringify(responseJson);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    }
+    this.generateBlasts();
+    //this.setState({ loaded: false, blasts: [], count: "(Will Recieve Props)" });
+  }
+
+  generateBlasts(){
+    return fetch('https://social-blast-api.herokuapp.com/get_blast_list?id=' + this.props.user_id)
+    .then((response) => response.json())
+    .then((responseJson) => {
+      var newcount = this.state.count + 1;
+      this.setState({ loaded: true,
+                      blasts: responseJson,
+                      count: "Called..."});
+      return JSON.stringify(responseJson);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   }
 
   close(){
@@ -83,7 +85,6 @@ class BlastModal extends Component {
           <View style={{marginTop: 22}}>
             <Button style={style.close} title="Done" onPress={this.props.closeEditBlast} />
             {inModal}
-            <Text> {this.state.count} </Text>
           </View>
          </Modal>
       </View>
