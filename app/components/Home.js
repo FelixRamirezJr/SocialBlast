@@ -53,7 +53,6 @@ class Home extends Component {
           Toast.show("Can not show in safari...",Toast.LONG);
         });
         */
-    }
 
   }
 
@@ -61,7 +60,7 @@ class Home extends Component {
   {
     if( this.state.messageToBlast.length == 0 ){
       Toast.show("Blast can't be blank",Toast.LONG);
-      return false;
+      return;
     }
     var blasted = 0;
     var temp = null;

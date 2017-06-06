@@ -3,7 +3,10 @@ import {
   Text,
   View,
   ScrollView,
-  AsyncStorage
+  AsyncStorage,
+  StyleSheet,
+  Button,
+  Platform
 } from 'react-native';
 
 import { List, ListItem } from 'react-native-elements';
@@ -12,6 +15,17 @@ import NewUser from '../components/NewUser';
 import Home from '../components/Home';
 import Loading from '../components/Loading';
 import FacebookLogin from '../components/AuthFacebook';
+import OAuthManager from 'react-native-oauth';
+import SafariView from 'react-native-safari-view';
+
+
+const manager = new OAuthManager('NetworkBlast');
+manager.configure({
+  twitter: {
+    consumer_key: 'hjiiNZpvH4lsQ7TZDrLB5KliB',
+    consumer_secret: '8uJYSCCGAc2rMsfSJHaBICve7SJfuru5SGeVtJmkffaI4vKOJA'
+  }
+});
 var app_css = require('../stylesheets/global_css');
 var globals = require('../Utility/Global');
 var helper = require('../Utility/Helper');
@@ -31,9 +45,12 @@ class Networks extends Component {
                   current_user: null,
                   fb_token: "",
                   fb_email: "",
-                  fb_user_id: ""};
+                  fb_user_id: "",
+                  twitter_token: ""};
     this.loadUserData = this.loadUserData.bind(this);
     this.setFacebook = this.setFacebook.bind(this);
+    this.setTwitter = this.setTwitter.bind(this);
+    this.sendTwitterCredentials = this.sendTwitterCredentials.bind(this);
     // Get logged in user
     this.getUser();
   }
@@ -67,7 +84,8 @@ class Networks extends Component {
                        fb_token: responseJson.fb_token,
                        fb_email: responseJson.fb_email,
                        fb_name: responseJson.fb_name,
-                       fb_user_id: responseJson.fb_user_id});
+                       fb_user_id: responseJson.fb_user_id,
+                       twitter_token: responseJson.twitter_token });
        return responseJson.email;
      })
      .catch((error) => {
@@ -90,18 +108,65 @@ class Networks extends Component {
      });
    }
 
+   setTwitter(){
+     if( Platform.OS == "ios" ){
+       var sendUrl = "https://network-blast.herokuapp.com/start_twitter?id=" + this.state.current_user.id;
+       SafariView.isAvailable()
+         .then(SafariView.show({
+           url: sendUrl
+         }))
+         .catch(error => {
+           Toast.show("Can not show in safari...",Toast.LONG);
+        });
+        let dismissSubscription = SafariView.addEventListener(
+          "onDismiss",
+          () => {
+            this.loadUserData();
+          }
+        );
+     } else {
+       manager.authorize('twitter')
+         .then(resp => this.sendTwitterCredentials(resp) )
+         .catch(err => console.log(err));
+     }
+   }
+
+   sendTwitterCredentials(resp){
+     var twitter_key = resp.response.credentials.consumerKey;
+     var twitter_token = resp.response.credentials.accessToken;
+     var twitter_user_id = resp.response.uuid;
+     helper.saveTwitterCredentials( this.state.current_user.id, twitter_token, twitter_user_id ,"","");
+     this.setState({ twitter_token: resp.response.credentials.accessToken,
+                     twitter_user_id: resp.response.uuid});
+   }
+
   render() {
-    var facebookText = null;
+    var facebookText,twitterText,twitterButtonText = null;
     if( this.state.fb_token.length > 1 ) {
       facebookText = <Text> You are authorized with {this.state.fb_name} </Text>;
     } else {
-      facebookText = <Text> Authorize below with Facebook so you can add them to your Blast List </Text>;
+      facebookText = <Text> Authorize below with Facebook so you can add it to your Blast List </Text>;
+    }
+    if( this.state.twitter_token.length > 1 ){
+      twitterButtonText = "Switch Accounts";
+      twitterText = <Text> You are currently authorized with Twitter </Text>;
+    } else {
+      twitterButtonText = "Continue with Twitter";
+      twitterText = <Text> Authorize below with Twitter so you can it to your blast list. </Text>;
     }
     return (
       <View style={app_css.container}>
-        <Text> {this.state.debuggerMessages} | {this.state.fb_name} | {this.state.fb_email} </Text>
         {this.state.loaded ? (
-          <FacebookLogin id={this.state.current_user.id} setFacebook={this.setFacebook}> </FacebookLogin>
+          <View style={style.facebook}>
+            <Text> {this.state.debuggerMessages} </Text>
+            {facebookText}
+            <FacebookLogin id={this.state.current_user.id}
+                           setFacebook={this.setFacebook} />
+           {twitterText}
+           <Button style={style.twitterButton}
+                   title={twitterButtonText}
+                   onPress={this.setTwitter} />
+          </View>
         ) : (
           <Loading />
         )}
@@ -109,5 +174,17 @@ class Networks extends Component {
     );
   }
 }
+
+const style = StyleSheet.create({
+  facebook: {
+    alignItems: 'center'
+  },
+  twitter: {
+    alignItems: 'center'
+  },
+  twitterButton: {
+
+  }
+});
 
 export default Networks;

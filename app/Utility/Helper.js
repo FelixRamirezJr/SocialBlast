@@ -32,7 +32,27 @@ export function saveFacebookData(user_id,fb_email,fb_name,fb_user_id,fb_token){
      });
   }
 
-  export function blastToFacebook(user_id,token,message){
+  export function saveTwitterCredentials(user_id,accessToken,twitter_user_id,secret,username){
+    fetch('https://social-blast-api.herokuapp.com/users/set_twitter_basic_info', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: user_id,
+        twitter_user_id: twitter_user_id,
+        twitter_token: accessToken,
+        twitter_secret: secret,
+        twitter_username: username
+      })
+    }).then((response) => response.json())
+      .then((responseJson) => {
+         return responseJson.email;
+    });
+  }
+
+  export function blastToFacebook(user_id,token,message) {
     console.log("Test");
     fetch('https://graph.facebook.com/' + user_id + "/feed", {
       method: 'POST',
