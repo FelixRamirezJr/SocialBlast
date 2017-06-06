@@ -32,30 +32,6 @@ class Home extends Component {
     this.submit = this.submit.bind(this);
   }
 
-  componentDidMount()
-  {
-    /*
-    this.setState({ debug: "Just started..." });
-    if( Platform.OS == 'android' ){
-      manager.authorize('twitter')
-        .then(resp => this.setState({debug: JSON.stringify(resp)}) )
-        .catch(err => console.log(err));
-    }
-    else
-    {
-      var sendUrl = "https://network-blast.herokuapp.com/start_twitter?id=" + this.props.current_user.id;
-      //var sendUrl = "https://www.google.com";
-      SafariView.isAvailable()
-        .then(SafariView.show({
-          url: sendUrl
-        }))
-        .catch(error => {
-          Toast.show("Can not show in safari...",Toast.LONG);
-        });
-        */
-
-  }
-
   submit()
   {
     if( this.state.messageToBlast.length == 0 ){

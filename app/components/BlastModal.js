@@ -17,7 +17,7 @@ class BlastModal extends Component {
     super(props);
     this.state = {
       visible: false,
-      blast_list: [],
+      blasts: [],
       loaded: false,
       count: 0
     };
@@ -38,7 +38,7 @@ class BlastModal extends Component {
       .then((response) => response.json())
       .then((responseJson) => {
         var newcount = this.state.count + 1;
-        this.setState({ loaded: true, count: newcount });
+        this.setState({ loaded: true, count: newcount, blasts: responseJson });
         return JSON.stringify(responseJson);
       })
       .catch((error) => {
@@ -61,7 +61,7 @@ class BlastModal extends Component {
     if( this.props.visible && this.state.loaded == false ){
       inModal = <Loading />;
     } else {
-      inModal = this.props.blasts.map(function (item) {
+      inModal = this.state.blasts.map(function (item) {
          return (
            <NetworksToToggle
            active={item.active}
@@ -83,6 +83,7 @@ class BlastModal extends Component {
           <View style={{marginTop: 22}}>
             <Button style={style.close} title="Done" onPress={this.props.closeEditBlast} />
             {inModal}
+            <Text> {this.state.count} </Text>
           </View>
          </Modal>
       </View>
