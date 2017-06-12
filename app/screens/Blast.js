@@ -3,7 +3,8 @@ import {
   Text,
   View,
   ScrollView,
-  AsyncStorage
+  AsyncStorage,
+  Linking
 } from 'react-native';
 
 import { List, ListItem } from 'react-native-elements';
@@ -84,7 +85,6 @@ class Blast extends Component {
         ) : (
           <Loading />
         )}
-        <Text> {this.state.count} </Text>
       </View>
     );
   }

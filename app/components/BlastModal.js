@@ -26,9 +26,6 @@ class BlastModal extends Component {
     this.generateBlasts = this.generateBlasts.bind(this);
   }
 
-  componentWillMount(){
-  }
-
   componentWillReceiveProps(props){
     this.generateBlasts();
     //this.setState({ loaded: false, blasts: [], count: "(Will Recieve Props)" });
@@ -50,7 +47,6 @@ class BlastModal extends Component {
   }
 
   close(){
-    console.log("CLOSING");
     this.props.closeEditBlast();
   }
 

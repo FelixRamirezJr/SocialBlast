@@ -74,6 +74,27 @@ export function saveFacebookData(user_id,fb_email,fb_name,fb_user_id,fb_token){
     });
   }
 
+  export function blastToTwitter( id, token, secret, message ){
+    fetch('https://social-blast-api.herokuapp.com/blasts/blast_to_twitter', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: id,
+        twitter_token: token,
+        twitter_secret: secret,
+        message: message
+      })
+    }).then((response) => response.json())
+      .then((responseJson) => {
+         return "Success";
+    }).catch(function(error){
+      return "false";
+    });
+  }
+
   export function changeBlastActivity(id,value){
     fetch('https://social-blast-api.herokuapp.com/blasts/toggle_active', {
       method: 'POST',
@@ -102,6 +123,8 @@ export function saveFacebookData(user_id,fb_email,fb_name,fb_user_id,fb_token){
              current_user.fb_token, message );
         break;
       case "twitter":
+      blastToTwitter( current_user.id, current_user.twitter_token,
+                      current_user.twitter_secret, message);
         break;
       default:
         console.log("Blast can not be found...");

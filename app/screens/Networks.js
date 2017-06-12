@@ -6,7 +6,8 @@ import {
   AsyncStorage,
   StyleSheet,
   Button,
-  Platform
+  Platform,
+  Linking
 } from 'react-native';
 
 import { List, ListItem } from 'react-native-elements';
@@ -17,6 +18,7 @@ import Loading from '../components/Loading';
 import FacebookLogin from '../components/AuthFacebook';
 import OAuthManager from 'react-native-oauth';
 import SafariView from 'react-native-safari-view';
+import Toast from 'react-native-simple-toast';
 
 
 const manager = new OAuthManager('NetworkBlast');
@@ -85,7 +87,8 @@ class Networks extends Component {
                        fb_email: responseJson.fb_email,
                        fb_name: responseJson.fb_name,
                        fb_user_id: responseJson.fb_user_id,
-                       twitter_token: responseJson.twitter_token });
+                       twitter_token: responseJson.twitter_token,
+                       twitter_secret: responseJson.twitter_secret });
        return responseJson.email;
      })
      .catch((error) => {
@@ -109,8 +112,10 @@ class Networks extends Component {
    }
 
    setTwitter(){
+     var sendUrl = "https://network-blast.herokuapp.com/start_twitter?id=" + this.state.current_user.id;
      if( Platform.OS == "ios" ){
-       var sendUrl = "https://network-blast.herokuapp.com/start_twitter?id=" + this.state.current_user.id;
+       //Linking.openURL(sendUrl);
+
        SafariView.isAvailable()
          .then(SafariView.show({
            url: sendUrl
@@ -124,20 +129,38 @@ class Networks extends Component {
             this.loadUserData();
           }
         );
+
      } else {
-       manager.authorize('twitter')
-         .then(resp => this.sendTwitterCredentials(resp) )
-         .catch(err => console.log(err));
+       Linking.openURL(sendUrl);
      }
+   }
+
+   componentWillMount() {
+     Toast.show("Will mount",Toast.LONG);
+   }
+
+   componentDidMount() {
+     Linking.addEventListener('url', this._handleOpenURL);
+   }
+
+   componentWillUnmount() {
+     Linking.removeEventListener('url', this._handleOpenURL);
+     Toast.show("Unmounting",Toast.LONG);
+   }
+   _handleOpenURL(event) {
+     this.getUser();
    }
 
    sendTwitterCredentials(resp){
      var twitter_key = resp.response.credentials.consumerKey;
      var twitter_token = resp.response.credentials.accessToken;
      var twitter_user_id = resp.response.uuid;
+     var twitter_secret = resp.response.credentials.secretToken;
      helper.saveTwitterCredentials( this.state.current_user.id, twitter_token, twitter_user_id ,"","");
      this.setState({ twitter_token: resp.response.credentials.accessToken,
-                     twitter_user_id: resp.response.uuid});
+                     twitter_user_id: resp.response.uuid,
+                     debuggerMessages: JSON.stringify(resp),
+                     twitter_secret: resp.response.secretToken });
    }
 
   render() {
@@ -158,7 +181,6 @@ class Networks extends Component {
       <View style={app_css.container}>
         {this.state.loaded ? (
           <View style={style.facebook}>
-            <Text> {this.state.debuggerMessages} </Text>
             {facebookText}
             <FacebookLogin id={this.state.current_user.id}
                            setFacebook={this.setFacebook} />
@@ -170,6 +192,8 @@ class Networks extends Component {
         ) : (
           <Loading />
         )}
+        <Text> {this.state.debuggerMessages} </Text>
+        <Text> {this.state.secretToken} </Text>
       </View>
     );
   }

@@ -13,6 +13,7 @@
 #import <React/RCTRootView.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import "OAuthManager.h"
+#import <React/RCTLinkingManager.h>
 
 
 
@@ -52,7 +53,7 @@
                                                       sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
                                                              annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
                   ];
-  
+
   if ([url.absoluteString containsString:@"twitter"]){
       return [OAuthManager handleOpenUrl:application
                                  openURL:url
@@ -63,11 +64,11 @@
   return handled;
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-  return [OAuthManager handleOpenUrl:application
-                             openURL:url
-                   sourceApplication:sourceApplication
-                          annotation:annotation];
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+  return [RCTLinkingManager application:application openURL:url
+                      sourceApplication:sourceApplication annotation:annotation];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
