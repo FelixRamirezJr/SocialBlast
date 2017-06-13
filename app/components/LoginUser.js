@@ -2,15 +2,14 @@ import React, {Component} from 'react';
 import { AppRegistry,Text,View,StyleSheet, TextInput, ScrollView, Button } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import TextField from 'react-native-md-textinput';
-
+import Toast from 'react-native-simple-toast';
 
 var formsStyles = require('../stylesheets/forms');
 var app_css = require('../stylesheets/global_css');
 var globals = require('../Utility/Global');
 var helper = require('../Utility/Helper');
 
-
-class NewUser extends Component {
+class LoginUser extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -18,19 +17,16 @@ class NewUser extends Component {
       password: "",
       emailTemp: "",
       passwordTemp: "",
-      user_set: this.props.user_set,
-      invalidEmail: true,
-      invalidPassword: true
+      invalidPassword: "",
+      invalidEmail: ""
     };
     this.submit = this.submit.bind(this);
-    this.goToSignin = this.goToSignin.bind(this);
   }
 
-
   submit(){
-    if( helper.validateEmail(this.state.email) && this.state.password.length >= 5 )
+    if( this.state.email.length > 0 && this.state.password.length > 0)
     {
-      fetch('https://social-blast-api.herokuapp.com/users/new', {
+      fetch('https://social-blast-api.herokuapp.com/users/login', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -42,40 +38,27 @@ class NewUser extends Component {
         })
       }).then((response) => response.json())
         .then((responseJson) => {
-          this.props.set_user( String(responseJson.id) );
-           //this.setUser( String(responseJson.id) );
+          Toast.show("There was a response",Toast.LONG);
+          if ( !(JSON.stringify(responseJson).indexOf("error") > -1) ){
+            this.props.set_user( String(responseJson.id) );
+          } else {
+            Toast.show("Incorrect email or password",Toast.LONG);
+          }
            return responseJson.email;
+      }).catch(function(error){
+        Toast.show(error.message,Toast.LONG);
       });
     }
   }
 
-  goToSignin(){
-    this.props.logIn();
-  }
-
   render (){
-    let invalidEmail,invalidPassword = null;
-    if(  !helper.validateEmail(this.state.email)  ){
-      invalidEmail = <Text> Please enter a valid email address </Text>;
-    } else {
-      invalidEmail = <Text> </Text>;
-    }
-    if (this.state.password.length <= 5) {
-      invalidPassword = <Text> Please enter at least 5 characters </Text>;
-    } else {
-      invalidPassword = <Text> </Text>;
-    }
-
     return (
-      <View style={app_css.container} >
-        <Text style={ style.welcome }> Welcome to Network Blast </Text>
-        <Text style={ style.details }> Thanks for downloading the Network Blast app! Before we continue, please provide an Email and Password for your account. </Text>
+      <View style={app_css.container}>
         <TextField label={'Email'}
                   onChangeText={(email) => this.setState({email})}
                    value={this.state.email}
                   highlightColor={globals.COLOR.PRIMARY_ACCENT}
                   inputStyle={{ height: globals.FORMS.INPUT_HEIGHT, lineHeight: globals.FORMS.INPUT_HEIGHT }}  />
-        { this.state.invalidEmail ? invalidEmail : null }
          <TextField label={'Password'}
                     onChangeText={(password) => this.setState({password})}
                     value={this.state.password}
@@ -84,19 +67,10 @@ class NewUser extends Component {
                     highlightColor={globals.COLOR.PRIMARY_ACCENT}
                     inputStyle={{ height: globals.FORMS.INPUT_HEIGHT, lineHeight: globals.FORMS.INPUT_HEIGHT }} />
 
-        { this.state.invalidPassword ? invalidPassword : null }
-        <Text> {"\n"} </Text>
         <Button
           style={style.button}
           onPress={this.submit}
-          title="Create Account"
-          color={globals.COLOR.BRAND_COLOR_DARKEN}
-        />
-        <Text style={style.haveAccount}> If you already have an account </Text>
-        <Button
-          style={style.button}
-          onPress={this.goToSignin}
-          title="Sign In"
+          title="Login"
           color={globals.COLOR.BRAND_COLOR_DARKEN}
         />
       </View>
@@ -105,22 +79,13 @@ class NewUser extends Component {
 }
 
 var style = StyleSheet.create({
-  welcome: {
-    textAlign: 'center',
-    color: globals.COLOR.PRIMARY,
-    fontSize: 25,
-    marginBottom: 5
-  },
-  details: {
-    color: globals.COLOR.SECONDARY_TEXT
+  header: {
+    marginTop: 30,
+    color: 'red'
   },
   button: {
-    marginTop: 30
-  },
-  haveAccount: {
-    textAlign: 'center'
+    marginTop: 20
   }
 });
 
-
-export default NewUser;
+export default LoginUser;

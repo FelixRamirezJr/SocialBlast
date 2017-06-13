@@ -8,7 +8,8 @@ var formsStyles = require('../stylesheets/forms');
 var app_css = require('../stylesheets/global_css');
 
 
-class Loading extends Component {
+class Loading extends Component
+{
   constructor(props){
     super(props);
     this.state = {

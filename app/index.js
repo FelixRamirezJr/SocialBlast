@@ -11,6 +11,7 @@ import {
 import NewUser from './components/NewUser';
 import Home from './components/Home';
 import Loading from './components/Loading';
+import LoginUser from './components/LoginUser';
 
 var STORAGE_KEY = userKey();
 
@@ -23,8 +24,10 @@ class App extends Component {
                   email: "",
                   loaded: false,
                   componentToLoad: null,
-                  current_user: null};
+                  current_user: null,
+                  login: false };
     this.set_user = this.set_user.bind(this);
+    this.logIn = this.logIn.bind(this);
   }
 
   componentWillMount(){
@@ -51,6 +54,10 @@ class App extends Component {
 
 createUser(email,password){
 
+}
+
+logIn(){
+  this.setState({ login: true });
 }
 
 set_user = async (value) => {
@@ -89,9 +96,16 @@ loadUserData() {
       {
         this.state.componentToLoad = <Root />
       }
+      else if( this.state.login == false )
+      {
+        this.state.componentToLoad = <NewUser
+                                      set_user = { this.set_user }
+                                      logIn = { this.logIn } />
+      }
       else
       {
-        this.state.componentToLoad = <NewUser set_user = { this.set_user } />
+        this.state.componentToLoad = <LoginUser logIn={ this.logIn }
+                                      set_user = { this.set_user } />
       }
     }
     else
