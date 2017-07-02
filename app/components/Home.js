@@ -1,5 +1,13 @@
 import React, {Component} from 'react';
-import { AppRegistry,Text,View,StyleSheet, TextInput, ScrollView, Button,Platform, WebView } from 'react-native';
+import { AppRegistry,
+         Text,
+         View,
+         StyleSheet,
+         TextInput,
+         ScrollView,
+         Button,
+         Platform,
+         WebView } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import TextField from 'react-native-md-textinput';
 import Toast from 'react-native-simple-toast';
@@ -65,17 +73,19 @@ class Home extends Component {
   render (){
     return (
       <View style={app_css.container} >
-        <Text>  Hello, { this.props.email }  </Text>
-        <TextField label={'Message to blast'}
-                  onChangeText={(messageToBlast) => this.setState({messageToBlast})}
-                  value={this.state.messageToBlast}
-                  highlightColor={globals.COLOR.PRIMARY_ACCENT}
-                  inputStyle={{ height: globals.FORMS.INPUT_HEIGHT, lineHeight: globals.FORMS.INPUT_HEIGHT }}  />
-        <Button
-          onPress={this.submit}
-          title="BLAST THIS MESSAGE"
-          color={globals.COLOR.BRAND_COLOR_DARKEN}
-        />
+        <View style={app_css.boxed}>
+          <Text>  Hello, { this.props.email }  </Text>
+          <TextField label={'Message to blast'}
+                    onChangeText={(messageToBlast) => this.setState({messageToBlast})}
+                    value={this.state.messageToBlast}
+                    highlightColor={globals.COLOR.PRIMARY_ACCENT}
+                    inputStyle={{ height: globals.FORMS.INPUT_HEIGHT, lineHeight: globals.FORMS.INPUT_HEIGHT }}  />
+          <Button
+            onPress={this.submit}
+            title="BLAST THIS MESSAGE"
+            color={globals.COLOR.BRAND_COLOR_DARKEN}
+          />
+        </View>
 
         <BlastList blasts={this.props.blasts}
                    user_id={this.props.current_user.id}

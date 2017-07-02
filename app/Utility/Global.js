@@ -13,6 +13,6 @@ module.exports = {
     INPUT_HEIGHT: 40
   },
   BORDER: {
-    RADIUS: 8
+    RADIUS: 2
   },
 };
