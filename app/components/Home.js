@@ -13,6 +13,7 @@ import TextField from 'react-native-md-textinput';
 import Toast from 'react-native-simple-toast';
 import BlastList from './BlastList';
 import SafariView from 'react-native-safari-view';
+import ImageUploader from './ImageUploader';
 
 import OAuthManager from 'react-native-oauth';
 
@@ -85,6 +86,7 @@ class Home extends Component {
             title="BLAST THIS MESSAGE"
             color={globals.COLOR.BRAND_COLOR_DARKEN}
           />
+          <ImageUploader />
         </View>
 
         <BlastList blasts={this.props.blasts}

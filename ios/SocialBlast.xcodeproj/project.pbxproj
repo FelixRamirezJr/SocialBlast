@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -42,6 +41,8 @@
 		D1B51B18169F476FA3D9E45F /* libSafariViewManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 058756C245794A0D82C82F99 /* libSafariViewManager.a */; };
 		F99E9FB551DE4E928A485CD9 /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1237081C3CBF4BBBA88F30B5 /* libRCTFBSDK.a */; };
 		FB65416A40894A1EA29A353A /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 808B72CD6E7B4D8ABAE3D25C /* FontAwesome.ttf */; };
+		4C266263F2DC461A96717871 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77BCCA345DA44366BA562CBC /* libRNImagePicker.a */; };
+		964E6E89A2574AA6BB26DF9D /* libRNUploader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFDD40BAC3454B15A96195AD /* libRNUploader.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -304,6 +305,10 @@
 		CFBC98096B204305B5B010C4 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		E5A27CCCC3184000A5941F74 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		F9F85C65A4104BD08B68AD3F /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
+		B249814386A549E99C8A5713 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; name = "RNImagePicker.xcodeproj"; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		77BCCA345DA44366BA562CBC /* libRNImagePicker.a */ = {isa = PBXFileReference; name = "libRNImagePicker.a"; path = "libRNImagePicker.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		39B3C51C46EA4F5AB1E51C4B /* RNUploader.xcodeproj */ = {isa = PBXFileReference; name = "RNUploader.xcodeproj"; path = "../node_modules/react-native-uploader/ios/RNUploader.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		AFDD40BAC3454B15A96195AD /* libRNUploader.a */ = {isa = PBXFileReference; name = "libRNUploader.a"; path = "libRNUploader.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -332,6 +337,8 @@
 				041162631EDACE26005508B6 /* Bolts.framework in Frameworks */,
 				481E8FF17886C7029335524A /* Pods_SocialBlast.framework in Frameworks */,
 				D1B51B18169F476FA3D9E45F /* libSafariViewManager.a in Frameworks */,
+				4C266263F2DC461A96717871 /* libRNImagePicker.a in Frameworks */,
+				964E6E89A2574AA6BB26DF9D /* libRNUploader.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -524,6 +531,8 @@
 				44F59C691A354F4F9648A7A5 /* RCTFBSDK.xcodeproj */,
 				79A0380727574F8791AC5402 /* OAuthManager.xcodeproj */,
 				C331513FF7354AF38C180B36 /* SafariViewManager.xcodeproj */,
+				B249814386A549E99C8A5713 /* RNImagePicker.xcodeproj */,
+				39B3C51C46EA4F5AB1E51C4B /* RNUploader.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1056,11 +1065,14 @@
 					"$(SRCROOT)/../node_modules/react-native-oauth/ios/OAuthManager",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS",
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 				);
 				INFOPLIST_FILE = SocialBlast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/SocialBlast\"",
+					"\"$(SRCROOT)/SocialBlast\"",
 					"\"$(SRCROOT)/SocialBlast\"",
 				);
 				NEW_SETTING = "";
@@ -1095,11 +1107,14 @@
 					"$(SRCROOT)/../node_modules/react-native-oauth/ios/OAuthManager",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS",
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 				);
 				INFOPLIST_FILE = SocialBlast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/SocialBlast\"",
+					"\"$(SRCROOT)/SocialBlast\"",
 					"\"$(SRCROOT)/SocialBlast\"",
 				);
 				NEW_SETTING = "";

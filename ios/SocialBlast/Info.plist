@@ -67,6 +67,10 @@
 	<string/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Users in my app can post photos</string>
+	<key>NSCameraUsageDescription</key>
+	<string> Users in my app can post images</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string> Users in my app can get microphone information </string>
 	<key>NetworkBlast</key>
 	<string>NetworkBlast</string>
 	<key>UIAppFonts</key>
