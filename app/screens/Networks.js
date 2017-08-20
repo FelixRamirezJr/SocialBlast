@@ -135,10 +135,6 @@ class Networks extends Component {
      }
    }
 
-   componentWillMount() {
-     Toast.show("Will mount",Toast.LONG);
-   }
-
    componentDidMount() {
      Linking.addEventListener('url', this._handleOpenURL);
    }

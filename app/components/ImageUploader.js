@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import { AppRegistry,Text,View,StyleSheet, TextInput, Button, Image } from 'react-native';
+import { AppRegistry,Text,View,StyleSheet, TextInput, Button, Image, Dimensions } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
 import Toast from 'react-native-simple-toast';
 var globals = require('../Utility/Global');
+var win = Dimensions.get('window');
 
 
 var options = {
@@ -46,7 +47,6 @@ class ImageUploader extends Component {
 
         // You can also display the image using data:
         //let source = { uri: 'data:image/jpeg;base64,' + response.data };
-        Toast.show("Source",Toast.LONG);
         this.setState({
           avatarSource: source
         });
@@ -55,9 +55,11 @@ class ImageUploader extends Component {
 
   }
   render (){
-    var pictureUploaded = <Text> Not yet uploaded </Text>;
+    var pictureUploaded = null;
     if ( this.state.avatarSource ) {
-      pictureUploaded = <Image source={this.state.avatarSource} style={{width: 40, height: 40}} />;
+      pictureUploaded = <Image source={this.state.avatarSource}
+                               style={{width: win.width - 40, height: win.height}}
+                               />;
     }
     return (
       <View>
@@ -74,7 +76,12 @@ class ImageUploader extends Component {
 }
 
 var style = StyleSheet.create({
-
+  image: {
+    flex: 1,
+    alignSelf: 'stretch',
+    width: win.width,
+    height: win.height,
+  }
 });
 
 

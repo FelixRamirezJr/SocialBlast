@@ -73,7 +73,7 @@ class Home extends Component {
 
   render (){
     return (
-      <View style={app_css.container} >
+      <ScrollView style={app_css.container} >
         <View style={app_css.boxed}>
           <Text>  Hello, { this.props.email }  </Text>
           <TextField label={'Message to blast'}
@@ -92,7 +92,7 @@ class Home extends Component {
         <BlastList blasts={this.props.blasts}
                    user_id={this.props.current_user.id}
                    loadUserData={this.props.loadUserData} />
-      </View>
+      </ScrollView>
     );
   }
 }
