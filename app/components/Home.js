@@ -36,9 +36,16 @@ class Home extends Component {
     super(props);
     this.state = {
       messageToBlast: "",
-      debug: ""
+      debug: "",
+      photo: null
     };
     this.submit = this.submit.bind(this);
+    this.setPhoto = this.setPhoto.bind(this);
+  }
+
+  setPhoto( toSet )
+  {
+    this.setState({ photo: toSet });
   }
 
   submit()
@@ -52,7 +59,15 @@ class Home extends Component {
     for(var i = 0; i < this.props.current_user.blasts.length; i++)
     {
       temp = this.props.current_user.blasts[i];
-      if( temp.active  )
+      if ( temp.active && this.state.photo ){
+        /*
+        helper.blastWithPhoto( this.props.current_user,
+                               temp.name,
+                               this.state.messageToBlast,
+                               this.state.photo );
+        */
+        blasted++;
+      } else( temp.active )
       {
         helper.blast(this.props.current_user,temp.name,this.state.messageToBlast);
         blasted++;
@@ -86,7 +101,7 @@ class Home extends Component {
             title="BLAST THIS MESSAGE"
             color={globals.COLOR.BRAND_COLOR_DARKEN}
           />
-          <ImageUploader />
+          <ImageUploader setPhoto={this.setPhoto} />
         </View>
 
         <BlastList blasts={this.props.blasts}

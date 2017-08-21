@@ -131,3 +131,21 @@ export function saveFacebookData(user_id,fb_email,fb_name,fb_user_id,fb_token){
         break;
     }
   }
+
+  export function blastWithPhoto( current_user, names, message, photo )
+  {
+    var xhr = new XMLHttpRequest();
+    var photoToUpload = {
+      uri: photo,
+      type: 'image/jpeg',
+      name: 'uploaded.jpg',
+    };
+    var body = new FormData();
+    body.append('photo', photoToUpload);
+    body.append('names', names);
+    body.append('id', current_user.id);
+    body.append('message', message);
+
+    xhr.open('POST', "https://social-blast-api.herokuapp.com/blasts/blast_with_photo");
+    xhr.send(body);
+  }

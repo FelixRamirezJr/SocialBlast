@@ -50,6 +50,7 @@ class ImageUploader extends Component {
         this.setState({
           avatarSource: source
         });
+        this.props.setPhoto( response.uri );
       }
     });
 
